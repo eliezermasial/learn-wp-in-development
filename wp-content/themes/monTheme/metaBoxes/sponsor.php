@@ -3,7 +3,8 @@
 
 class SponsorMetaBox {
     
-    const META_KEY = 'monTheme_sponsor';
+    const META_KEY = 'monTheme_sponsor'; //clé pour le champ personnalisé sponsor
+    const NONCE = 'monTheme_sponsor_nonce';//clé de sécurité pour le nonce
 
     public static function register() {
         add_action('add_meta_boxes', [self::class, 'add'], 10, 2);
@@ -25,15 +26,15 @@ class SponsorMetaBox {
             <input type="checkbox" id="<?= self::META_KEY ?>" name="<?= self::META_KEY ?>" value="1" <?php checked($value, 1); ?>>
             <input type="hidden" name="monTheme_sponsor_hidden" value="0"> 
     
-            <?php wp_nonce_field('monTheme_save_sponsor_action', 'monTheme_sponsor_nonce'); //ajout du nonce?>
+            <?php wp_nonce_field(self::NONCE, self::NONCE); //ajout du nonce?>
         <?php
     }
 
     public static function save($post_id) {
 
         //verification si le nonce est présent
-        if (!isset($_POST['monTheme_sponsor_nonce']) || 
-            !wp_verify_nonce($_POST['monTheme_sponsor_nonce'], 'monTheme_save_sponsor_action')) {
+        if (!isset($_POST[self::NONCE]) || 
+            !wp_verify_nonce($_POST[self::NONCE], self::NONCE)) {
             return;
         }
 

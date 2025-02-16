@@ -47,6 +47,37 @@ function monTheme_add_custo_box()
     add_meta_box('monTheme_custo_box', 'sponsor', 'monTheme_render_sponsor_box', 'post', 'side');
 }
 
+function monTheme_init()
+{
+    register_taxonomy('sport', 'post', [
+        'labels' => [
+            'name' => 'sports',
+            'singular_name' => 'sport',
+            'plural_name' => 'sports',
+            'search_items' => 'rechercher des sports',
+            'all_items' => 'tous les sports',
+            'edit_item' => 'modifier le sport',
+            'update_item' => 'mettre à jour le sport',
+            'add_new_item' => 'ajouter un nouveau sport',
+            'new_item_name' => 'nouveau nom de sport',
+            'menu_name' => 'sports',
+        ],
+        'show_in_rest' => true,
+        'hierarchical' => true,
+        'show_admin_column' => true,
+    ]);
+
+    register_post_type('bien', [
+        'label' => 'biens',
+        'public' => true,
+        'menu_position' => 3,
+        'menu_icon' => 'dashicons-admin-home',
+        'supports' => ['title', 'editor', 'thumbnail'],
+        'show_in_rest' => true,
+    ]);
+}
+
+add_action('init', 'monTheme_init');
 add_action('after_setup_theme', 'monTheme_support');
 add_action('wp_enqueue_scripts', 'montheme_enregister_assets');
 add_filter('wp_title', 'montheme_title');
@@ -55,4 +86,3 @@ add_filter('nav_menu_link_attributes', 'nav_menu_link_class', 10, 3);
 
 require_once('metaBoxes/sponsor.php');
 SponsorMetaBox::register();
-
